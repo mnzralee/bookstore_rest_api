@@ -26,13 +26,14 @@ import java.util.Map;
 public class CartResource {
 
     // In memory storage for carts
-    private final static Map<Integer, Cart> carts = new HashMap<>();
+    public final static Map<Integer, Cart> carts = new HashMap<>();
 
     // In memory storage for customers and books
     private final static Map<Integer, Customer> customers = CustomerResource.customers;
     private final static Map<Integer, Book> books = BookResource.books;
 
     @POST
+    @Path("/items")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addItemToCart(@PathParam("customerId") int customerId, Book book, @QueryParam("quantity") int quantity) {
 
@@ -70,7 +71,7 @@ public class CartResource {
     }
 
     @PUT
-    @Path("/{bookId}")
+    @Path("/items/{bookId}")
     public Response updateCartItemQuantity(@PathParam("customerId") int customerId, @PathParam("bookId") int bookId, @QueryParam("quantity") int quantity) {
         if (quantity <= 0) {
             throw new InvalidInputException("Quantity must be greater than zero.");
