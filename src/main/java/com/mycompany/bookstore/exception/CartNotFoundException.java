@@ -8,6 +8,10 @@ package com.mycompany.bookstore.exception;
  *
  * @author HP
  */
-public class CartNotFoundException {
-    
+import jakarta.ws.rs.NotFoundException;
+
+public class CartNotFoundException extends NotFoundException {
+    public CartNotFoundException(String message) {
+        super(message);
+    }
 }

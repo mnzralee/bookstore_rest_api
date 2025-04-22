@@ -8,6 +8,10 @@ package com.mycompany.bookstore.exception;
  *
  * @author HP
  */
-public class BookNotFoundException {
-    
+import jakarta.ws.rs.NotFoundException;
+
+public class BookNotFoundException extends NotFoundException {
+    public BookNotFoundException(String message) {
+        super(message);
+    }
 }

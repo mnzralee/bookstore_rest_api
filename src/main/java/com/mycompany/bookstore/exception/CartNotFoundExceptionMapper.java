@@ -8,6 +8,22 @@ package com.mycompany.bookstore.exception;
  *
  * @author HP
  */
-public class CartNotFoundExceptionMapper {
-    
+
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
+import java.util.HashMap;
+import java.util.Map;
+
+@Provider
+public class CartNotFoundExceptionMapper implements ExceptionMapper<CartNotFoundException> {
+
+    @Override
+    public Response toResponse(CartNotFoundException exception) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("message", exception.getMessage());
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity(errorResponse)
+                .build();
+    }
 }

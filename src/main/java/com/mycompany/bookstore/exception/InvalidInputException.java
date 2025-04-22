@@ -8,6 +8,10 @@ package com.mycompany.bookstore.exception;
  *
  * @author HP
  */
-public class InvalidInputException {
-    
+import jakarta.ws.rs.BadRequestException;
+
+public class InvalidInputException extends BadRequestException {
+    public InvalidInputException(String message) {
+        super(message);
+    }
 }
