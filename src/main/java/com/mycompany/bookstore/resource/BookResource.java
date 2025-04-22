@@ -27,6 +27,18 @@ public class BookResource {
     public final static Map<Integer, Book> books = new HashMap<>();
     private static int nextBookId = 1;
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createBook(Book book) {
+        if (book.getTitle() == null || book.getTitle().isEmpty() || book.getAuthorId() == null || book.getAuthorId().isEmpty()) {
+            throw new InvalidInputException("Title and Author ID are required.");
+        }
+        book.setId(nextBookId++);
+        books.put(book.getId(), book);
+        return Response.status(Response.Status.CREATED)
+                .entity(book)
+                .build();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,19 +54,6 @@ public class BookResource {
             throw new BookNotFoundException("Book not found with id: " + id);
         }
         return books.get(id);
-    }
-    
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createBook(Book book) {
-        if (book.getTitle() == null || book.getTitle().isEmpty() || book.getAuthorId() == null || book.getAuthorId().isEmpty()) {
-            throw new InvalidInputException("Title and Author ID are required.");
-        }
-        book.setId(nextBookId++);
-        books.put(book.getId(), book);
-        return Response.status(Response.Status.CREATED)
-                .entity(book)
-                .build();
     }
 
     @PUT
