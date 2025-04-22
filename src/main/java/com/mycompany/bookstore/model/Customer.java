@@ -9,6 +9,5 @@ package com.mycompany.bookstore.model;
  * @author HP
  */
 public class Customer {
-    
-    
+       
 }
