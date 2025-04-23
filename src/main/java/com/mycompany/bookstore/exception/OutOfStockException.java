@@ -8,8 +8,8 @@ package com.mycompany.bookstore.exception;
  *
  * @author HP
  */
-import jakarta.ws.rs.ClientErrorException;
-import jakarta.ws.rs.core.Response;
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.core.Response;
 
 
 public class OutOfStockException extends ClientErrorException {

@@ -8,11 +8,11 @@ package com.mycompany.bookstore.exception;
  *
  * @author HP
  */
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.Provider;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 @Provider
 public class BookNotFoundExceptionMapper implements ExceptionMapper<BookNotFoundException> {

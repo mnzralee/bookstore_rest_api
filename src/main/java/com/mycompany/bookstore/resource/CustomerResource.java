@@ -12,13 +12,13 @@ package com.mycompany.bookstore.resource;
 import com.mycompany.bookstore.exception.CustomerNotFoundException;
 import com.mycompany.bookstore.exception.InvalidInputException;
 import com.mycompany.bookstore.model.Customer;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/customers")
 public class CustomerResource {

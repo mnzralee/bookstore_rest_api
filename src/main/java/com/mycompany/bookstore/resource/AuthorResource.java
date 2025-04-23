@@ -13,14 +13,14 @@ import com.mycompany.bookstore.exception.AuthorNotFoundException;
 import com.mycompany.bookstore.exception.InvalidInputException;
 import com.mycompany.bookstore.model.Author;
 import com.mycompany.bookstore.model.Book;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/authors")
 public class AuthorResource {

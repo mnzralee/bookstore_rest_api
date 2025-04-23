@@ -8,7 +8,7 @@ package com.mycompany.bookstore.exception;
  *
  * @author HP
  */
-import jakarta.ws.rs.NotFoundException;
+import javax.ws.rs.NotFoundException;
 
 public class AuthorNotFoundException extends NotFoundException {
     public AuthorNotFoundException(String message) {
