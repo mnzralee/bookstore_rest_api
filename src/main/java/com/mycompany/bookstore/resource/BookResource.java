@@ -29,6 +29,7 @@ public class BookResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createBook(Book book) {
         if (book.getTitle() == null || book.getTitle().isEmpty() || book.getAuthorId() == null || book.getAuthorId().isEmpty()) {
             throw new InvalidInputException("Title and Author ID are required.");
