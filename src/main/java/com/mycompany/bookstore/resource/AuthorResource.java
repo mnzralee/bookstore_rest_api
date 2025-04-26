@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
 public class AuthorResource {
 
     // In memory storage for authors
-    private final static Map<Integer, Author> authors = new HashMap<>();
+    public final static Map<Integer, Author> authors = new HashMap<>();
     private static int nextAuthorId = 1;
 
     // In memory storage for books from BookResource
@@ -34,6 +34,7 @@ public class AuthorResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createAuthor(Author author) {
         if (author.getFirstName() == null || author.getFirstName().isEmpty() || author.getLastName() == null || author.getLastName().isEmpty()) {
             throw new InvalidInputException("First name and Last name are required.");
@@ -79,6 +80,7 @@ public class AuthorResource {
 
     @DELETE
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public void deleteAuthor(@PathParam("id") int id) {
         if (!authors.containsKey(id)) {
             throw new AuthorNotFoundException("Author not found with id: " + id);

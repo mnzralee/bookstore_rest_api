@@ -28,6 +28,7 @@ public class CustomerResource {
     private static int nextCustomerId = 1;
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCustomer(Customer customer) {
         if (customer.getFirstName() == null || customer.getFirstName().isEmpty() ||
@@ -78,6 +79,7 @@ public class CustomerResource {
 
     @DELETE
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public void deleteCustomer(@PathParam("id") int id) {
         if (!customers.containsKey(id)) {
             throw new CustomerNotFoundException("Customer not found with id: " + id);

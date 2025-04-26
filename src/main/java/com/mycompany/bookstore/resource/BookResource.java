@@ -9,8 +9,10 @@ package com.mycompany.bookstore.resource;
  * @author HP
  */
 
+import com.mycompany.bookstore.exception.AuthorNotFoundException;
 import com.mycompany.bookstore.exception.BookNotFoundException;
 import com.mycompany.bookstore.exception.InvalidInputException;
+import com.mycompany.bookstore.model.Author;
 import com.mycompany.bookstore.model.Book;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +27,7 @@ public class BookResource {
 
     // In memory storage for books, public to make it accessible to other classes
     public final static Map<Integer, Book> books = new HashMap<>();
+    public final static Map<Integer, Author> authors = AuthorResource.authors;
     private static int nextBookId = 1;
 
     @POST
@@ -34,6 +37,10 @@ public class BookResource {
         if (book.getTitle() == null || book.getTitle().isEmpty() || book.getAuthorId() == null || book.getAuthorId().isEmpty()) {
             throw new InvalidInputException("Title and Author ID are required.");
         }
+        if (!authors.containsKey(Integer.valueOf(book.getAuthorId()))) {
+            throw new AuthorNotFoundException("Author not found with id: " + book.getAuthorId());
+        }
+        
         book.setId(nextBookId++);
         books.put(book.getId(), book);
         return Response.status(Response.Status.CREATED)
@@ -75,6 +82,7 @@ public class BookResource {
 
     @DELETE
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public void deleteBook(@PathParam("id") int id) {
         if (!books.containsKey(id)) {
             throw new BookNotFoundException("Book not found with id: " + id);
