@@ -34,6 +34,7 @@ public class CartResource {
 
     @POST
     @Path("/items")
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addItemToCart(@PathParam("customerId") int customerId, Book book, @QueryParam("quantity") int quantity) {
 
@@ -93,6 +94,7 @@ public class CartResource {
 
     @DELETE
     @Path("/items/{bookId}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response removeCartItem(@PathParam("customerId") int customerId, @PathParam("bookId") int bookId) {
         if (!customers.containsKey(customerId)) {
             throw new CustomerNotFoundException("Customer not found with id: " + customerId);
