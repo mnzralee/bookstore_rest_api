@@ -38,6 +38,7 @@ public class OrderResource {
     private final static Map<Integer, Cart> carts = CartResource.carts;
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createOrder(@PathParam("customerId") int customerId) {
         if (!customers.containsKey(customerId)) {
