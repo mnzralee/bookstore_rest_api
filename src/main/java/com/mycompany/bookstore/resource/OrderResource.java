@@ -33,7 +33,7 @@ public class OrderResource {
     private final static Map<Integer, Order> orders = new HashMap<>();
     private static int nextOrderId = 1;
 
-    // In memory storage for customers and carts
+    // In memory storage for customers and carts 
     private final static Map<Integer, Customer> customers = CustomerResource.customers;
     private final static Map<Integer, Cart> carts = CartResource.carts;
 
@@ -42,18 +42,18 @@ public class OrderResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createOrder(@PathParam("customerId") int customerId) {
         if (!customers.containsKey(customerId)) {
-            throw new CustomerNotFoundException("Customer not found with id: " + customerId);
+            throw new CustomerNotFoundException("Customer not found with id: " + customerId); //404
         }
         Cart cart = carts.get(customerId);
         if (cart == null || cart.getCartItems().isEmpty()) {
-            throw new CartNotFoundException("Cart not found or is empty for customer id: " + customerId);
+            throw new CartNotFoundException("Cart not found or is empty for customer id: " + customerId); //404
         }
 
         // Create the order
         Order order = new Order();
         order.setId(nextOrderId++);
         order.setCustomerId(customerId);
-        order.setOrderItems(cart.getCartItems()); //copy cart items
+        order.setOrderItems(cart.getCartItems()); //copy cart items to order map
         order.setOrderDate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
 
         // Calculate total price
@@ -70,14 +70,14 @@ public class OrderResource {
 
         return Response.status(Response.Status.CREATED)
                 .entity(order)
-                .build();
+                .build(); // 201
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Order> getOrdersByCustomer(@PathParam("customerId") int customerId) {
         if (!customers.containsKey(customerId)) {
-            throw new CustomerNotFoundException("Customer not found with id: " + customerId);
+            throw new CustomerNotFoundException("Customer not found with id: " + customerId); // 404
         }
         List<Order> customerOrders = new ArrayList<>();
         for (Order order : orders.values()) {
@@ -93,7 +93,7 @@ public class OrderResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Order getOrderByOrderId(@PathParam("customerId") int customerId, @PathParam("orderId") int orderId) {
         if (!customers.containsKey(customerId)) {
-            throw new CustomerNotFoundException("Customer not found with id: " + customerId);
+            throw new CustomerNotFoundException("Customer not found with id: " + customerId); // 404
         }
         if (!orders.containsKey(orderId)) {
             throw new InvalidInputException("Order not found with id: " + orderId); //400
