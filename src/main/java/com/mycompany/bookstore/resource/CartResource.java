@@ -13,6 +13,7 @@ import com.mycompany.bookstore.exception.BookNotFoundException;
 import com.mycompany.bookstore.exception.CartNotFoundException;
 import com.mycompany.bookstore.exception.CustomerNotFoundException;
 import com.mycompany.bookstore.exception.InvalidInputException;
+import com.mycompany.bookstore.exception.OutOfStockException;
 import com.mycompany.bookstore.model.Book;
 import com.mycompany.bookstore.model.Cart;
 import com.mycompany.bookstore.model.Customer;
@@ -44,19 +45,34 @@ public class CartResource {
         if (!customers.containsKey(customerId)) {
             throw new CustomerNotFoundException("Customer not found with id: " + customerId);
         }
+        if (book == null || book.getId() == 0) {
+            throw new InvalidInputException("Book ID must be provided.");
+        }
         if (!books.containsKey(book.getId())) {
             throw new BookNotFoundException("Book not found with id: " + book.getId());
         }
 
+        // Fetch the full Book object from storage
+        Book fullBook = books.get(book.getId());
+        
+        if (quantity > fullBook.getStock()) {
+            throw new OutOfStockException("Book Out of Stock");
+        }
+        
+        int updatedStock = fullBook.getStock() - quantity;
+        fullBook.setStock(updatedStock);
+        
         Cart cart = carts.get(customerId);
         if (cart == null) {
             cart = new Cart(customerId);
             carts.put(customerId, cart);
         }
-        cart.addBook(book, quantity);
 
-        return Response.status(Response.Status.CREATED).entity(cart).build();
+        cart.addBook(fullBook, quantity);
+
+        return Response.status(Response.Status.OK).entity("{\"message\":\"Item added to cart.\"}").build();
     }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +89,7 @@ public class CartResource {
 
     @PUT
     @Path("/items/{bookId}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateCartItemQuantity(@PathParam("customerId") int customerId, @PathParam("bookId") int bookId, @QueryParam("quantity") int quantity) {
         if (quantity <= 0) {
             throw new InvalidInputException("Quantity must be greater than zero.");
@@ -89,7 +106,7 @@ public class CartResource {
             throw new CartNotFoundException("Cart not found for customer id: " + customerId);
         }
         cart.updateQuantity(bookId, quantity);
-        return Response.ok(cart).build();
+        return Response.ok("{\"message\":\"Updated Book ID: " + bookId + " to quantity " + quantity + "\"}").build();
     }
 
     @DELETE
@@ -108,7 +125,7 @@ public class CartResource {
             throw new CartNotFoundException("Cart not found for customer id: " + customerId);
         }
         cart.removeBook(bookId);
-        return Response.ok(cart).build();
+        return Response.ok("{\"message\":\"Item removed from cart.\"}").build();
     }
 }
 
